@@ -43,8 +43,8 @@ const server = require("http").createServer((req,res) => {
 
     const universalAmbervars = {
         "test": true,
-        "chatbox.ws": "ws://192.168.0.190:3000",
-        "chatbox.host": "http://192.168.0.190:3000",
+        "chatbox.ws": require("./config.json").chatbox.websocket,
+        "chatbox.host": require("./config.json").chatbox.server,
         "client.id": clientId(ip(req))
     }
     

@@ -69,7 +69,7 @@ if(!wallError || bypassAllWallErrors) {
     var ws;
     async function connectToWS() {
 
-        ws = new WebSocket("ws://localhost:3000");
+        ws = new WebSocket(chatbox.ws);
 
         await new Promise(resolve => ws.onopen = resolve);
 
