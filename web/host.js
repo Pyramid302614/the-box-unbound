@@ -1,5 +1,5 @@
-process.addListener("uncaughtException",(e) => console.error(e.message));
-process.addListener("unhandledRejection",(r) => console.error(r.reason));
+process.addListener("uncaughtException",(e) => console.error(e));
+process.addListener("unhandledRejection",(r) => console.error(r));
 
 function ambervars(str,values) {
     for(ambervar of Object.keys(values)) str = str.replaceAll(`&&${ambervar}`,values[ambervar]);

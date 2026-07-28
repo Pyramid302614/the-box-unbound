@@ -3,7 +3,7 @@
         "port": 3001
     },
     "chatbox": {
-        "server": "http://77.37.97.2:3001",
-        "websocket": "http://77.37.97.2:8080"
+        "server": "http://192.168.0.190:3000",
+        "websocket": "http://192.168.0.190:3000"
     }
 }

@@ -97,7 +97,7 @@ if(!wallError || bypassAllWallErrors) {
 
                 case "name":
 
-                    systemMessage(`${signal.slice("name>").split("&&&&&&&&")[0]} has changed their name to ${signal.split("&&&&&&&&")[1]}`); break;
+                    systemMessage(`${signal.slice("name>".length).split("&&&&&&&&")[0]} has changed their name to ${signal.split("&&&&&&&&")[1]}`); break;
 
                 case "warning":
 
