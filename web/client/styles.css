@@ -1,0 +1,13 @@
+#splash {
+
+    font-size: 50px;
+
+}
+.gradient-lr {
+
+    background: linear-gradient(to right, #8400ff, #1b6aff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+}
