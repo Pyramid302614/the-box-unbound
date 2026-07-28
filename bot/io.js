@@ -10,6 +10,7 @@ module.exports = {
 
     in(author,msg) {
 
+        if(msg.includes("::::")) return; // Anti-feedback
         require("../web/bot.js").message(author,msg);
 
     },
