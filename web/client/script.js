@@ -23,7 +23,7 @@ if(!wallError || bypassAllWallErrors) {
         name: "Unknown"
     };
 
-    // Server
+    // Nickname
     async function nicknameSetFromTextbox() {
         
         const result = await updateName(document.getElementById("nickname-textbox").value);
@@ -55,6 +55,16 @@ if(!wallError || bypassAllWallErrors) {
 
     }
 
+
+    // Message sending/recieving
+    function messageFromTextbox() {
+
+        ws.send("message>"+document.getElementById("message-textbox").value);
+        document.getElementById("message-textbox").value = "";
+
+    }
+
+
     // Websocket
     var ws;
     async function connectToWS() {
@@ -67,21 +77,59 @@ if(!wallError || bypassAllWallErrors) {
 
         document.getElementById("loading-text").innerHTML = "Joining...";
 
-        await new Promise(resolve => setTimeout(resolve,1_000)); // Give it time to process
-
         const onmessage = (e) => {
-            console.log(e);
+
+            const signal = e.data;
+
+            switch(signal.split(">")[0]) {
+
+                case "join":
+
+                    systemMessage(`${signal.slice("join>".length)} joined.`); break;
+
+                case "leave":
+
+                    systemMessage(`${signal.slice("leave>".length)} left.`); break;
+
+                case "message":
+
+                    userMessage(signal.split("&&&&&&&&")[1],signal.slice("message>".length).split("&&&&&&&&")[0]); break;
+
+                case "name":
+
+                    systemMessage(`${signal.slice("name>").split("&&&&&&&&")[0]} has changed their name to ${signal.split("&&&&&&&&")[1]}`); break;
+
+                case "warning":
+
+                    systemMessage(signal.slice("warning>".length)); break;
+
+                case "mute":
+
+                    document.getElementById("message-textbox").disabled = true;
+                    setTimeout(() => {
+                        document.getElementById("message-textbox").disabled = false;
+                    },3000);
+                    break;
+
+                default:
+
+                    systemMessage(`[RAW] ${signal}`); break;
+
+
+            }
+
         };
 
         const onclose = (e) => {
             systemMessage("The websocket has unexpectedly closed.<br/>Attemping to reconnect...");
             var i = setInterval(async () => {
                 try {
-                    ws = new WebSocket(chatbox.ws);
-                    await new Promise(resolve => ws.opopen = resolve);
+                    ws = await new WebSocket(chatbox.ws);
+                    await new Promise(resolve => ws.onopen = resolve);
                     ws.onmessage = onmessage;
                     ws.onclose = onclose;
                     systemMessage("Re-established communication with WebSocket.");
+                    ws.send("join>"+client.id);
                     clearInterval(i);
                 } catch(ignored) {}
             },5_000);
@@ -94,7 +142,7 @@ if(!wallError || bypassAllWallErrors) {
 
     // Content output handling
     function rawMessage(msg) {
-        document.getElementById("content").innerHTML += `${msg}<br/>`;
+        document.getElementById("messages").innerHTML += `${msg}<br/>`;
     }
     function systemMessage(msg) {
         rawMessage(`<b class='gradient-lr'>${msg}</b>`)
@@ -118,9 +166,12 @@ if(!wallError || bypassAllWallErrors) {
             if(e.key == "Enter") nicknameSetFromTextbox();
             document.getElementById("nickname-textbox").style.backgroundColor = "black";
         });
+        document.getElementById("message-textbox").addEventListener("keydown",(e) => {
+            if(e.key == "Enter") messageFromTextbox();
+        });
 
         // Transition to home
-        await new Promise(resolve => setTimeout(resolve,2_000));
+            // await new Promise(resolve => setTimeout(resolve,2_000));
         document.getElementById("splash--container").style.opacity = 0;
         await new Promise(resolve => setTimeout(resolve,500));
         document.getElementById("nonsplash--container").style.opacity = 1;

@@ -36,23 +36,29 @@
     left: 0px;
     top: 0;
     width: 100%;
-    height: fit-content;
-    padding: 10px;
+    height: 40px;
 
 }
 #header-content {
 
+    position: absolute;
+
     color: white;
+    left: 10px;
+    top: 50%;    
+    transform: translateY(-50%);
 
 }
 #nickname-textbox {
 
+    position: absolute;
+
     color: white;
     background-color: black;
-    right: 30px;
-    position: absolute;
-    top: 50%;
+    right: 10px;
+    top: 50%;    
     transform: translateY(-50%);
+
 
 }
 #nickname-textbox:focus {
@@ -61,6 +67,45 @@
     border: 2px solid transparent;
     border-radius: 8px;
     border-image: linear-gradient(to right, #8400ff, #1b6aff) 0.5;
+
+}
+
+#footer {
+
+    background-color: black;
+    
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    height: 40px;
+
+}
+
+#message-textbox {
+
+    position: absolute;
+
+    color: white;
+    background-color: black;
+    width: calc(100% - 20px);
+    left: 50%;
+    top: 50%;    
+    transform: translateX(-50%) translateY(-50%);
+
+}
+#message-textbox:focus {
+
+    outline: none;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    border-image: linear-gradient(to right, #8400ff, #1b6aff) 0.5;
+
+}
+
+#messages-container {
+
+    padding: 20px;
 
 }
 
