@@ -2,8 +2,8 @@
 
     display: flex;
     justify-content: center;
-    height: 100vh;
-    width: 100vh;
+    height: 100%;
+    width: 100%;
     align-items: center;
     text-align: center;
     top: 0;
@@ -22,11 +22,47 @@
 #nonsplash--container {
 
     opacity: 0;
-    
+
     transition: opacity 0.5s ease;
 
 }
 
+
+#header {
+
+    background-color: black;
+    
+    position: fixed;
+    left: 0px;
+    top: 0;
+    width: 100%;
+    height: fit-content;
+    padding: 10px;
+
+}
+#header-content {
+
+    color: white;
+
+}
+#nickname-textbox {
+
+    color: white;
+    background-color: black;
+    right: 30px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+#nickname-textbox:focus {
+
+    outline: none;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    border-image: linear-gradient(to right, #8400ff, #1b6aff) 0.5;
+
+}
 
 .gradient-lr {
 
