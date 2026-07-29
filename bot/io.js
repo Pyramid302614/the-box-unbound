@@ -1,7 +1,7 @@
 const { WebhookClient } = require("discord.js");
 
 var channel = undefined;
-const webhookRaw = require("fs").readFileSync("webhook","utf-8");
+const webhookRaw = require("fs").readFileSync("webhook","utf-8").toString().trim();
 const webhook = {
     id: webhookRaw.split("&&&&&&&&")[0],
     token: webhookRaw.split("&&&&&&&&")[1]
