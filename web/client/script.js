@@ -200,7 +200,8 @@ if(!wallError || bypassAllWallErrors) {
         window.addEventListener("keydown",(e) => {
             if(document.activeElement != document.getElementById("nickname-textbox")) {
                 if(!e.ctrlKey && !e.altKey && !e.metaKey) document.getElementById("message-textbox").focus();
-                else if(e.key == "Enter") messageFromTextbox();
+            } else {
+                if(e.key == "Enter") messageFromTextbox();
             }
         });
 
