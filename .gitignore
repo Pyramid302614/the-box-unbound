@@ -1,2 +1,5 @@
 node_modules
 token
+web/clients.json
+backend/clients.json
+backend/chat.log
