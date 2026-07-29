@@ -185,6 +185,10 @@ if(!wallError || bypassAllWallErrors) {
     // Splash Screen
     (async () => {
 
+        var t = setTimeout(() => {
+            document.getElementById("loading-text").innerHTML = "Stuck? <a href='http://77.37.97.2:3002/fallback'>Try this</a>";
+        }, 10_000);
+
         await new Promise(resolve => setTimeout(resolve,2_500));
 
         document.getElementById("loading-text").innerHTML = "Fetching name...";
@@ -192,6 +196,8 @@ if(!wallError || bypassAllWallErrors) {
 
         document.getElementById("loading-text").innerHTML = "Connecting to WebSocket...";
         await connectToWS();
+
+        clearTimeout(t);
         
         document.getElementById("nickname-textbox").addEventListener("keydown",(e) => {
             if(e.key == "Enter") nicknameSetFromTextbox();
