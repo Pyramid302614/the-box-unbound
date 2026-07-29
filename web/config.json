@@ -1,6 +1,6 @@
 {
     "hosting": {
-        "port": 3001
+        "port": 3000
     },
     "chatbox": {
         "server": "http://192.168.0.190:3000",

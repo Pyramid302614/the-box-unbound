@@ -93,7 +93,9 @@ if(!wallError || bypassAllWallErrors) {
 
                 case "message":
 
-                    userMessage(signal.split("&&&&&&&&")[1],signal.slice("message>".length).split("&&&&&&&&")[0]); break;
+                    var author = signal.split("&&&&&&&&")[1];
+                    if(author.startsWith("::::")) author = author.slice("::::".length);
+                    userMessage(author,signal.slice("message>".length).split("&&&&&&&&")[0]); break;
 
                 case "name":
 

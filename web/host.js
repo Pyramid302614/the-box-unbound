@@ -27,8 +27,11 @@ function clientId(ip) {
         return data[ip];
     }
 }
+async function wait(ms) {
+    await new Promise(resolve => setTimeout(resolve,ms));
+}
 
-const server = require("http").createServer((req,res) => {
+const server = require("http").createServer(async (req,res) => {
 
     // CORS headers
     res.setHeader('Access-Control-Allow-Origin', "*");
@@ -45,11 +48,32 @@ const server = require("http").createServer((req,res) => {
         "test": true,
         "chatbox.ws": require("./config.json").chatbox.websocket,
         "chatbox.host": require("./config.json").chatbox.server,
-        "client.id": clientId(ip(req))
+        "client.id": null
     }
+    const getClientId = () => {
+        universalAmbervars["client.id"] = clientId(ip(req));
+    };
     
-    switch(req.url) {
+    switch(req.url.split(":")[0]) {
+        case "/assets":
+            const path = req.url.slice(1).replaceAll(":","/");
+            if(!require("fs").existsSync(path)) {
+                res.writeHead(404,{"Content-Type":"text/plain"});
+                res.end("404! Cannot find resource :(");
+                break;
+            }
+            var contentType = "text/plain";
+            switch(contentType.split(".")[1]) {
+                case "png": contentType = "image/png"
+            }
+            res.writeHead(200,{"Content-Type":contentType});
+            res.end(require("fs").readFileSync(path));
+            break;
+        case "/me":
+            require("../backend/backend.js").serverRequest(req,res);
+            break;
         case "/":
+            getClientId();
             res.writeHead(200,{"Content-Type":"text/html"});
             res.end(
                 ambervars(
@@ -59,6 +83,8 @@ const server = require("http").createServer((req,res) => {
             );
             break;
         case "/styles.css":
+            await wait(1000);
+            getClientId();
             res.writeHead(200,{"Content-Type":"text/css"});
             res.end(
                 ambervars(
@@ -68,6 +94,8 @@ const server = require("http").createServer((req,res) => {
             );
             break;
         case "/script.js":
+            await wait(1000);
+            getClientId();
             res.writeHead(200,{"Content-Type":"application/json"});
             res.end(
                 ambervars(
@@ -85,6 +113,8 @@ const server = require("http").createServer((req,res) => {
     require("./config.json").hosting.port,
     "0.0.0.0",
     () => {
-        console.log("Web client provider open at port " + require("./config.json").hosting.port);
+        console.log("Web client provider + Unbound backend open at port " + require("./config.json").hosting.port);
     }
 );
+
+require("../backend/backend.js").init(server);

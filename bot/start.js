@@ -30,11 +30,8 @@ client.login(require("fs").readFileSync("token","utf-8"));
 
 require("./shared.js").clientReady = async () => {
 
+    console.log("Initializing IO...")
     await require("./io.js").init();
+    console.log("Ready when you are");
 
-    console.log("Starting box bot...");
-    require("../web/bot.js").signal = (msg) => require("./boxbot.js").processSignal(msg.data);
-    require("../web/bot.js").init();
-    console.log("Ready");
-
-}
+};

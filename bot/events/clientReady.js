@@ -7,7 +7,8 @@ module.exports = {
     async execute(client) {
 
         console.log("Client ready");
-        require("../shared.js").clientReady();
+        await require("../shared.js").clientReady();
+        // require("../io.js").out(null,"# The Box has been opened",true);
 
     }
 
