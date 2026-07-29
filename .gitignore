@@ -4,4 +4,4 @@ web/clients.json
 backend/clients.json
 backend/chat.log
 web/config.json
-backend/config.json
+bot/config.json
