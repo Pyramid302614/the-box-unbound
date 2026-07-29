@@ -79,6 +79,10 @@ const server = require("http").createServer(async (req,res) => {
         case "/me":
             require("../backend/backend.js").serverRequest(req,res);
             break;
+        case "/fallback":
+            universalAmbervars["chatbox.ws"] = require("./config.json")["fallback.ws"];
+            universalAmbervars["chatbox.host"] = require("./config.json")["fallback.server"];
+            // Goes to '/'
         case "/":
             getClientId();
             res.writeHead(200,{"Content-Type":"text/html"});
