@@ -198,10 +198,9 @@ if(!wallError || bypassAllWallErrors) {
             document.getElementById("nickname-textbox").style.backgroundColor = "black";
         });
         window.addEventListener("keydown",(e) => {
-            if(document.activeElement != document.getElementById("nickname-textbox") &&
-                !e.ctrlKey && !e.altKey && !e.metaKey) document.getElementById("message-textbox").focus();
-            if(e.key == "Enter") {
-                messageFromTextbox();
+            if(document.activeElement != document.getElementById("nickname-textbox")) {
+                if(!e.ctrlKey && !e.altKey && !e.metaKey) document.getElementById("message-textbox").focus();
+                else if(e.key == "Enter") messageFromTextbox();
             }
         });
 
