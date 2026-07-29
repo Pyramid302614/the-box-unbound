@@ -56,7 +56,7 @@ if(!wallError || bypassAllWallErrors) {
     }
 
 
-    // Message sending/recieving
+    // Message sending
     function messageFromTextbox() {
 
         ws.send("message>"+document.getElementById("message-textbox").value);
@@ -95,7 +95,9 @@ if(!wallError || bypassAllWallErrors) {
 
                     var author = signal.split("&&&&&&&&")[1];
                     if(author.startsWith("::::")) author = author.slice("::::".length);
-                    userMessage(author,signal.slice("message>".length).split("&&&&&&&&")[0]); break;
+                    userMessage(author,signal.slice("message>".length).split("&&&&&&&&")[0]);
+                    if(author == client.name) window.scrollTo(0,document.body.scrollHeight);
+                    break;
 
                 case "name":
 
@@ -168,8 +170,12 @@ if(!wallError || bypassAllWallErrors) {
             if(e.key == "Enter") nicknameSetFromTextbox();
             document.getElementById("nickname-textbox").style.backgroundColor = "black";
         });
-        document.getElementById("message-textbox").addEventListener("keydown",(e) => {
-            if(e.key == "Enter") messageFromTextbox();
+        window.addEventListener("keydown",(e) => {
+            if(document.activeElement != document.getElementById("nickname-textbox") &&
+                !e.ctrlKey && !e.altKey && !e.metaKey) document.getElementById("message-textbox").focus();
+            if(e.key == "Enter") {
+                messageFromTextbox();
+            }
         });
 
         // Transition to home
@@ -177,6 +183,8 @@ if(!wallError || bypassAllWallErrors) {
         document.getElementById("splash--container").style.opacity = 0;
         await new Promise(resolve => setTimeout(resolve,500));
         document.getElementById("nonsplash--container").style.opacity = 1;
+        
+        document.getElementById("message-textbox").focus();
 
     })();
 

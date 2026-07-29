@@ -47,8 +47,6 @@
     opacity: 0;
 
     transition: opacity 0.5s ease;
-    overflow: hidden;
-    overflow-y: hidden;
 
 }
 
@@ -140,7 +138,6 @@
     font-size: calc(16px * var(--scale));
     font-family: "Nexa";
     padding: calc(20px * var(--scale));
-    overflow-y: scroll;
 
 }
 
