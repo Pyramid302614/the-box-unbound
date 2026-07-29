@@ -22,18 +22,22 @@ module.exports = {
     },
     
     out(author,msg,system) {
-        
-        if(!system && author.startsWith("::::")) return; // Anti-echo
-        const message =
-            system?
-            `**${msg}**`:
-            `**${author}** > ${msg}`;
-        if(system) channel?.send?.(message);
-        else webhookClient?.send?.({
-            username: author,
-            avatarURL: require("../web/config.json").chatbox.server+"/assets:no-pfp.png",
-            content: msg
-        });
+
+        (async () => {
+            try {
+                if(!system && author.startsWith("::::")) return; // Anti-echo
+                const message =
+                    system?
+                    `**${msg}**`:
+                    `**${author}** > ${msg}`;
+                if(system) await channel?.send?.(message);
+                else await webhookClient?.send?.({
+                    username: author,
+                    avatarURL: "https://github.com/Pyramid302614/the-box-unbound/blob/main/assets/no-pfp.png?raw=true",
+                    content: msg
+                });
+            } catch(ignored) {}
+        })();
 
     }
 

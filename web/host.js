@@ -32,7 +32,7 @@ async function wait(ms) {
 }
 
 const server = require("http").createServer(async (req,res) => {
-
+console.log(req.url);
     // CORS headers
     res.setHeader('Access-Control-Allow-Origin', "*");
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -65,6 +65,7 @@ const server = require("http").createServer(async (req,res) => {
             var contentType = "text/plain";
             switch(contentType.split(".")[1]) {
                 case "png": contentType = "image/png"
+                case "ttf": contentType = "font/ttf"
             }
             res.writeHead(200,{"Content-Type":contentType});
             res.end(require("fs").readFileSync(path));

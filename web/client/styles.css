@@ -1,3 +1,19 @@
+:root {
+    --scale: 1.5;
+    --splash-scale: 2;
+}
+
+@font-face {
+    font-family: "Nexa";
+    src: url("/assets:Nexa-ExtraLight.ttf") format("truetype");
+    font-weight: normal;
+}
+@font-face {
+    font-family: "Nexa";
+    src: url("/assets:Nexa-Heavy.ttf") format("truetype");
+    font-weight: bold;
+}
+
 #splash--container {
 
     display: flex;
@@ -15,7 +31,14 @@
 }
 #splash {
 
-    font-size: 50px;
+    font-size: calc(50px * var(--splash-scale));
+    font-family: "Nexa";
+
+}
+#loading-text {
+
+    font-size: calc(20px * var(--splash-scale));
+    font-family: "Nexa";
 
 }
 
@@ -24,6 +47,8 @@
     opacity: 0;
 
     transition: opacity 0.5s ease;
+    overflow: hidden;
+    overflow-y: hidden;
 
 }
 
@@ -36,7 +61,7 @@
     left: 0px;
     top: 0;
     width: 100%;
-    height: 40px;
+    height: calc(40px * var(--scale));
 
 }
 #header-content {
@@ -44,9 +69,11 @@
     position: absolute;
 
     color: white;
-    left: 10px;
+    left: calc(10px * var(--scale));;
     top: 50%;    
     transform: translateY(-50%);
+    font-size: calc(16px * var(--scale));
+    font-family: "Nexa";
 
 }
 #nickname-textbox {
@@ -55,17 +82,19 @@
 
     color: white;
     background-color: black;
-    right: 10px;
+    right: calc(10px * var(--scale));;
     top: 50%;    
     transform: translateY(-50%);
-
+    height: calc(21px * var(--scale));
+    font-size: calc(12px * var(--scale));
+    font-family: "Nexa";
 
 }
 #nickname-textbox:focus {
 
     outline: none;
-    border: 2px solid transparent;
-    border-radius: 8px;
+    border: calc(2px * var(--scale)) solid transparent;
+    border-radius: calc(8px * var(--scale));
     border-image: linear-gradient(to right, #8400ff, #1b6aff) 0.5;
 
 }
@@ -78,7 +107,7 @@
     left: 0px;
     bottom: 0px;
     width: 100%;
-    height: 40px;
+    height: calc(40px * var(--scale));
 
 }
 
@@ -88,24 +117,30 @@
 
     color: white;
     background-color: black;
-    width: calc(100% - 20px);
+    width: calc(100% - calc(20px * var(--scale)));
+    height: calc(21px * var(--scale));
     left: 50%;
     top: 50%;    
     transform: translateX(-50%) translateY(-50%);
+    font-size: calc(12px * var(--scale));
+    font-family: "Nexa";
 
 }
 #message-textbox:focus {
 
     outline: none;
-    border: 2px solid transparent;
-    border-radius: 8px;
+    border: calc(2px * var(--scale)) solid transparent;
+    border-radius: calc(8px * var(--scale));;
     border-image: linear-gradient(to right, #8400ff, #1b6aff) 0.5;
 
 }
 
 #messages-container {
 
-    padding: 20px;
+    font-size: calc(16px * var(--scale));
+    font-family: "Nexa";
+    padding: calc(20px * var(--scale));
+    overflow-y: scroll;
 
 }
 
