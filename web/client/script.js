@@ -175,7 +175,7 @@ if(!wallError || bypassAllWallErrors) {
                 const chatLogs = await (await fetch(chatbox.host+"/chat.log")).text();
                 const logOff = parseInt("&&logOff");
                 console.log(chatLogs.split("\n").length + "," + logOff);               // +1 -> length
-                document.getElementById("messages").innerHTML = chatLogs.split("\n").slice(logOff+1).join("<br/>");
+                document.getElementById("messages").innerHTML = chatLogs.split("\n").slice(logOff+1).join("<br/>")+"<br/><hr>";
             })();
             return "Fetching!";
         }
@@ -198,10 +198,9 @@ if(!wallError || bypassAllWallErrors) {
             document.getElementById("nickname-textbox").style.backgroundColor = "black";
         });
         window.addEventListener("keydown",(e) => {
-            if(document.activeElement != document.getElementById("nickname-textbox") &&
-                !e.ctrlKey && !e.altKey && !e.metaKey) document.getElementById("message-textbox").focus();
-            if(e.key == "Enter") {
-                messageFromTextbox();
+            if(document.activeElement != document.getElementById("nickname-textbox")) {
+                if(!e.ctrlKey && !e.altKey && !e.metaKey) document.getElementById("message-textbox").focus();
+                if(e.key == "Enter") messageFromTextbox();
             }
         });
 
