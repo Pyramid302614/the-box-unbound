@@ -9,7 +9,9 @@ module.exports = {
 
     init: init,
     serverRequest: serverRequest,
-    webSocketSendAll: webSocketSendAll
+    webSocketSendAll: webSocketSendAll,
+    getClient: getClient,
+    getClientIdFromIP: getClientIdFromIP
 
 };
 
@@ -76,6 +78,9 @@ function webSocketConnection(ws,req) {
 
     if(getClientIdFromIP(getIP(req))) connectClient(getIP(req));
 
+    const chatLog = (require("fs").readFileSync("backend/chat.log") ?? "").toString();
+    const client = getClient(getClientIdFromIP(getIP(req)));    // +1 for join message for reloads
+    if(chatLog.split("\n").length-1 > client?.logOffIndex+1) ws.send("alert>🔔 You have unread messages! Run /unread to see what you missed while you were away.");
     ws.on("close",() => webSocketClose(ws,req));
 
     ws.on("message", event => {
@@ -121,6 +126,7 @@ function webSocketClose(ws,req) {
     const clientId = getClientIdFromIP(getIP(req));
     const client = getClient(clientId) ?? {};
     client.connected = false;
+    client.logOffIndex = (require("fs").readFileSync("backend/chat.log") ?? "").toString().split("\n").length; // Will land right on your leave message
     updateClient(clientId,client);
     webSocketSendAll(`leave>${client.displayName ?? "Anonymous"}`);
 

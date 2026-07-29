@@ -59,7 +59,9 @@ if(!wallError || bypassAllWallErrors) {
     // Message sending
     function messageFromTextbox() {
 
-        ws.send("message>"+document.getElementById("message-textbox").value);
+        const value = document.getElementById("message-textbox").value;
+        if(isCommand(value)) processCommand(value);
+        else ws.send("message>"+value);
         document.getElementById("message-textbox").value = "";
 
     }
@@ -82,6 +84,10 @@ if(!wallError || bypassAllWallErrors) {
             const signal = e.data;
 
             switch(signal.split(">")[0]) {
+
+                case "alert": 
+
+                    systemMessage(signal.slice("alert>".length)); break;
 
                 case "join":
 
@@ -154,6 +160,27 @@ if(!wallError || bypassAllWallErrors) {
     function userMessage(author,msg) {
         rawMessage(`<b>${author}</b> > ${msg}`);
     }
+    function isCommand(msg) {
+        return msg.startsWith("/");
+    }
+    function processCommand(rawMsg) {
+        const cmdName = rawMsg.split(" ")[0].slice(1);
+        systemMessage("/" + cmdName + " > " + commands[cmdName](rawMsg.split(" ")?.[1]?.split?.(",")??[]));
+    }
+
+    const commands = {
+
+        unread: (args) => {
+            (async () => {
+                const chatLogs = await (await fetch(chatbox.host+"/chat.log")).text();
+                const logOff = parseInt("&&logOff");
+                console.log(chatLogs.split("\n").length + "," + logOff);               // +1 -> length
+                document.getElementById("messages").innerHTML = chatLogs.split("\n").slice(logOff+1).join("<br/>");
+            })();
+            return "Fetching!";
+        }
+
+    };
 
     // Splash Screen
     (async () => {

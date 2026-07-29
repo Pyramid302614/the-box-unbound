@@ -7,7 +7,7 @@ function ambervars(str,values) {
 }
 
 function ip(req) {
-    return req.socket.remoteAddress;
+    return req.headers["cf-connecting-ip"] = req.socket.remoteAddress;
 }
 function randomClientId() {
     const existing = Object.values(JSON.parse(require("fs").readFileSync("web/clients.json","utf-8")));
@@ -48,13 +48,19 @@ const server = require("http").createServer(async (req,res) => {
         "test": true,
         "chatbox.ws": require("./config.json").chatbox.websocket,
         "chatbox.host": require("./config.json").chatbox.server,
-        "client.id": null
+        "client.id": null,
+        "logOff": null
     }
     const getClientId = () => {
         universalAmbervars["client.id"] = clientId(ip(req));
+        universalAmbervars["logOff"] = require("../backend/backend.js").getClient(universalAmbervars["client.id"])?.logOffIndex ?? 9999999
     };
     
     switch(req.url.split(":")[0]) {
+        case "/chat.log":
+            res.writeHead(200,{"Content-Type":"text/plain"});
+            res.end(require("fs").readFileSync("backend/chat.log","utf-8").toString());
+            break;
         case "/assets":
             const path = req.url.slice(1).replaceAll(":","/");
             if(!require("fs").existsSync(path)) {
