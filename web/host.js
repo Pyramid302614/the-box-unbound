@@ -89,7 +89,7 @@ const server = require("http").createServer(async (req,res) => {
                 )
             );
             break;
-        case "/styles.css":
+        case "/styles":
             await wait(1000);
             getClientId();
             res.writeHead(200,{"Content-Type":"text/css"});
@@ -100,7 +100,7 @@ const server = require("http").createServer(async (req,res) => {
                 )
             );
             break;
-        case "/script.js":
+        case "/script":
             await wait(1000);
             getClientId();
             res.writeHead(200,{"Content-Type":"application/json"});
