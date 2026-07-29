@@ -175,7 +175,7 @@ if(!wallError || bypassAllWallErrors) {
                 const chatLogs = await (await fetch(chatbox.host+"/chat.log")).text();
                 const logOff = parseInt("&&logOff");
                 console.log(chatLogs.split("\n").length + "," + logOff);               // +1 -> length
-                document.getElementById("messages").innerHTML = chatLogs.split("\n").slice(logOff+1).join("<br/>");
+                document.getElementById("messages").innerHTML = chatLogs.split("\n").slice(logOff+1).join("<br/>")+"<br/><hr>";
             })();
             return "Fetching!";
         }
