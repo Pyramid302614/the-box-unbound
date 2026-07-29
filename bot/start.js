@@ -26,7 +26,7 @@ for(const file of fs.readdirSync("bot/events")) {
 require("./shared.js").client = client;
 
 console.log("Starting discord bot...");
-client.login(require("fs").readFileSync("token","utf-8"));
+client.login(require("fs").readFileSync("token","utf-8").trim());
 
 require("./shared.js").clientReady = async () => {
 
