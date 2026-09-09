@@ -9,7 +9,7 @@ module.exports = {
         if(message.author.bot) return;
 
         const member = await (await require("../shared.js").client.guilds.fetch(require("../config.json").guild)).members.fetch(message.author.id);
-        if(message.channel.id == require("../config.json").channel) require("../io.js").in(member.displayName,message.content);        
+        if(message.channel.id == require("../config.json").channel) require("../io.js").in(member,message.content);        
 
     }
 
