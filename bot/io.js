@@ -15,9 +15,13 @@ module.exports = {
         webhookClient = new WebhookClient(webhook);
     },
 
-    in(author,msg) {
+    in(author,msg) { // Author is member object
 
-        require("../backend/backend.js").webSocketSendAll("message>"+msg+"&&&&&&&&::::"+author+"&&&&&&&&"+Date.now());
+        const ids = JSON.parse(require("fs").readFileSync("bot/ids.json","utf-8"));
+        ids[author.user.username] = author.user.id;
+        require("fs").writeFileSync("bot/ids.json",JSON.stringify(ids,null,2),"utf-8");
+
+        require("../backend/backend.js").webSocketSendAll("message>"+msg+"&&&&&&&&::::"+author.displayName+"&&&&&&&&"+Date.now());
 
     },
     
@@ -25,6 +29,15 @@ module.exports = {
 
         (async () => {
             try {
+                try {
+                    const ids = JSON.parse(require("fs").readFileSync("bot/ids.json","utf-8"));
+                    for(const match of msg.matchAll(/@\S*/g)) {
+                        const username = match.toString().slice(1);
+                        // console.log(match.toString() + "," + `<@${ids[username]}>`);
+                        msg = msg.replaceAll(match.toString(),`<@${ids[username]}>`);
+                        // console.log(message.replaceAll(match.toString(),`<@${ids[username]}>`));
+                    }
+                } catch(ignored) {}
                 if(!system && author.startsWith("::::")) return; // Anti-echo
                 const message =
                     system?
