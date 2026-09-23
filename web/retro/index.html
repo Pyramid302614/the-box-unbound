@@ -62,10 +62,10 @@
             }
             document.getElementById("loading").innerHTML = "";
         }
-
         document.getElementById("send").onclick = function() {
             ws.send("message>"+document.getElementById("msg").value);
         }
+        connectWS();
     } catch(e) {
         document.getElementById("loading").innerHTML = e;
     }
