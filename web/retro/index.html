@@ -61,7 +61,7 @@
                 sysMsg("Unexpected WebSocket closure. Attempting to reconnect...");
                 setTimeout(connectWS,5000);
             }
-            document.getElementById("loading").innerHTML = "";
+            document.getElementById("loading").innerHTML = "Connected! You can now send messages.";
         }
         document.getElementById("send").onclick = function() {
             ws.send("message>"+document.getElementById("msg").value);
