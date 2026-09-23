@@ -93,6 +93,16 @@ const server = require("http").createServer(async (req,res) => {
                 )
             );
             break;
+        case "/retro":
+            getClientId();
+            res.writeHead(200,{"Content-Type":"text/html"});
+            res.end(
+                ambervars(
+                    require("fs").readFileSync("web/retro/index.html","utf-8"),
+                    universalAmbervars
+                )
+            );
+            break;
         case "/styles":
             await wait(1000);
             getClientId();

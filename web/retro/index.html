@@ -1,0 +1,72 @@
+<input id="msg" type="text" placeholder="Type message here">
+<input id="send" type="button" value="Send">
+<span id="loading">Loading script...</span>
+<span id="content"></span>
+<script>
+    try {
+        var ws = null;
+        function raw(m) {
+            document.getElementById("content").innerHTML = document.getElementById("content").innerHTML + m;
+        }
+        function sysMsg(m) {
+            raw("<b>"+m+"</b><br/>");
+        }
+        function usrMsg(a,m) {
+            raw("<b>"+a+"</b> >> "+m+"<br/>");
+        }
+        function httpGet(url,callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if(xhr.readyState === 4) callback(xhr.responseText);
+            };
+            xhr.open("GET",url,true);
+            xhr.send();
+        }
+        function connectWS() {
+            document.getElementById("loading").innerHTML = "Connecting to WebSocket...";
+            ws = new WebSocket("&&chatbox.ws");
+            ws.onopen = function() {
+                ws.send("join>&&client.id");
+            }
+            ws.onmessage = function(e) {
+                var signal = e.data;
+                switch(signal.split(">")[0]) {
+                    case "alert": 
+                        sysMsg(signal.slice("alert>".length)); break;
+                    case "join":
+                        sysMsg(signal.slice("join>".length) + " joined."); break;
+                    case "leave":
+                        sysMsg(signal.slice("leave>".length) + " left."); break;
+                    case "message":
+                        var author = signal.split("&&&&&&&&")[1];
+                        if(author.indexOf("::::") == 0) author = author.slice("::::".length);
+                        usrMsg(author,signal.slice("message>".length).split("&&&&&&&&")[0]);
+                        break;
+                    case "name":
+                        sysMsg(signal.slice("name>".length).split("&&&&&&&&")[0] + " has changed their name to " + signal.split("&&&&&&&&")[1]); break;
+                    case "warning":
+                        sysMsg(signal.slice("warning>".length)); break;
+                    case "mute":
+                        document.getElementById("msg").disabled = true;
+                        setTimeout(function() {
+                            document.getElementById("msg").disabled = false;
+                        },3000);
+                        break;
+                    default:
+                        sysMsg("[RAW] " + signal); break;
+                }
+            }
+            ws.onclose = function() {
+                sysMsg("Unexpected WebSocket closure. Attempting to reconnect...");
+                setTimeout(connectWS,5000);
+            }
+            document.getElementById("loading").innerHTML = "";
+        }
+
+        document.getElementById("send").onclick = function() {
+            ws.send("message>"+document.getElementById("msg").value);
+        }
+    } catch(e) {
+        document.getElementById("loading").innerHTML = e;
+    }
+</script>
