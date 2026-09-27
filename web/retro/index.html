@@ -24,46 +24,50 @@
             xhr.send();
         }
         function connectWS() {
-            document.getElementById("loading").innerHTML = "Connecting to WebSocket...";
-            ws = new WebSocket("&&chatbox.ws");
-            ws.onopen = function() {
-                document.getElementById("loading").innerHTML = "Connected! You can now send messages.";
-                ws.send("join>&&client.id");
-            }
-            ws.onmessage = function(e) {
-                var signal = e.data;
-                switch(signal.split(">")[0]) {
-                    case "alert": 
-                        sysMsg(signal.slice("alert>".length)); break;
-                    case "join":
-                        sysMsg(signal.slice("join>".length) + " joined."); break;
-                    case "leave":
-                        sysMsg(signal.slice("leave>".length) + " left."); break;
-                    case "message":
-                        var author = signal.split("&&&&&&&&")[1];
-                        if(author.indexOf("::::") == 0) author = author.slice("::::".length);
-                        usrMsg(author,signal.slice("message>".length).split("&&&&&&&&")[0]);
-                        break;
-                    case "name":
-                        sysMsg(signal.slice("name>".length).split("&&&&&&&&")[0] + " has changed their name to " + signal.split("&&&&&&&&")[1]); break;
-                    case "warning":
-                        sysMsg(signal.slice("warning>".length)); break;
-                    case "mute":
-                        document.getElementById("msg").disabled = true;
-                        setTimeout(function() {
-                            document.getElementById("msg").disabled = false;
-                        },3000);
-                        break;
-                    default:
-                        sysMsg("[RAW] " + signal); break;
+            try {
+                document.getElementById("loading").innerHTML = "Connecting to WebSocket...";
+                ws = new WebSocket("&&chatbox.ws");
+                ws.onopen = function() {
+                    document.getElementById("loading").innerHTML = "Connected! You can now send messages.";
+                    ws.send("join>&&client.id");
                 }
-            }
-            ws.onclose = function() {
-                sysMsg("Unexpected WebSocket closure. Attempting to reconnect...");
-                setTimeout(connectWS,5000);
-            }
-            ws.onerror = function(e) {
-                document.getElementById("loading").innerHTML = "Error connecting to websocket '&&ws' : " + e;
+                ws.onmessage = function(e) {
+                    var signal = e.data;
+                    switch(signal.split(">")[0]) {
+                        case "alert": 
+                            sysMsg(signal.slice("alert>".length)); break;
+                        case "join":
+                            sysMsg(signal.slice("join>".length) + " joined."); break;
+                        case "leave":
+                            sysMsg(signal.slice("leave>".length) + " left."); break;
+                        case "message":
+                            var author = signal.split("&&&&&&&&")[1];
+                            if(author.indexOf("::::") == 0) author = author.slice("::::".length);
+                            usrMsg(author,signal.slice("message>".length).split("&&&&&&&&")[0]);
+                            break;
+                        case "name":
+                            sysMsg(signal.slice("name>".length).split("&&&&&&&&")[0] + " has changed their name to " + signal.split("&&&&&&&&")[1]); break;
+                        case "warning":
+                            sysMsg(signal.slice("warning>".length)); break;
+                        case "mute":
+                            document.getElementById("msg").disabled = true;
+                            setTimeout(function() {
+                                document.getElementById("msg").disabled = false;
+                            },3000);
+                            break;
+                        default:
+                            sysMsg("[RAW] " + signal); break;
+                    }
+                }
+                ws.onclose = function() {
+                    sysMsg("Unexpected WebSocket closure. Attempting to reconnect...");
+                    setTimeout(connectWS,5000);
+                }
+                ws.onerror = function(e) {
+                    document.getElementById("loading").innerHTML = "Error connecting to websocket '&&ws' : " + e;
+                }
+            } catch(e) {
+                sysMsg("Raw error: " + e);
             }
         }
         document.getElementById("send").onclick = function() {
