@@ -59,8 +59,9 @@
                             sysMsg("[RAW] " + signal); break;
                     }
                 }
-                ws.onclose = function() {
+                ws.onclose = function(e) {
                     sysMsg("Unexpected WebSocket closure. Attempting to reconnect...");
+                    sysMsg("Raw error: " + e);
                     setTimeout(connectWS,5000);
                 }
                 ws.onerror = function(e) {
