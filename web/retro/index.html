@@ -75,7 +75,7 @@
         document.getElementById("send").onclick = function() {
             ws.send("message>"+document.getElementById("msg").value);
         }
-        console.error = (m) => {
+        console.error = function(m) {
             sysMsg(m);
         }
         connectWS();
