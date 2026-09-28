@@ -61,7 +61,8 @@
                 }
                 ws.onclose = function(e) {
                     sysMsg("Unexpected WebSocket closure. Attempting to reconnect...");
-                    sysMsg("Raw error: " + e);
+                    sysMsg("Raw error: " + e.code + " : " + e.reason);
+                    sysMsg("Details: Connecting to: '&&ws'");
                     setTimeout(connectWS,5000);
                 }
                 ws.onerror = function(e) {
