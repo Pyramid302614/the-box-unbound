@@ -75,6 +75,9 @@
         document.getElementById("send").onclick = function() {
             ws.send("message>"+document.getElementById("msg").value);
         }
+        console.error = (m) => {
+            sysMsg(m);
+        }
         connectWS();
         setInterval(function() {
             if (ws.readyState == WebSocket.OPEN) {
