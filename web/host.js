@@ -90,8 +90,8 @@ const server = require("http").createServer(async (req,res) => {
             );
             break;
         case "/fallback":
-            universalAmbervars["chatbox.ws"] = require("./config.json")["fallback.ws"];
-            universalAmbervars["chatbox.host"] = require("./config.json")["fallback.server"];
+            universalAmbervars["chatbox.ws"] = require("./config.json").fallback.ws;
+            universalAmbervars["chatbox.host"] = require("./config.json").fallback.server;
             // Goes to '/'
         case "/retro":
             getClientId();
