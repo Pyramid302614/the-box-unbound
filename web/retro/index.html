@@ -62,11 +62,11 @@
                 ws.onclose = function(e) {
                     sysMsg("Unexpected WebSocket closure. Attempting to reconnect...");
                     sysMsg("Raw error: " + e.code + " : " + e.reason);
-                    sysMsg("Details: Connecting to: '&&ws'");
+                    sysMsg("Details: Connecting to: '&&chatbox.ws'");
                     setTimeout(connectWS,5000);
                 }
                 ws.onerror = function(e) {
-                    document.getElementById("loading").innerHTML = "Error connecting to websocket '&&ws' : " + e;
+                    document.getElementById("loading").innerHTML = "Error connecting to websocket '&&chatbox.ws' : " + e;
                 }
             } catch(e) {
                 sysMsg("Raw error: " + e);
@@ -76,6 +76,11 @@
             ws.send("message>"+document.getElementById("msg").value);
         }
         connectWS();
+        setInterval(function() {
+            if (ws.readyState == WebSocket.OPEN) {
+                ws.send("heartbeat");
+            }
+        }, 30000);
     } catch(e) {
         document.getElementById("loading").innerHTML = e;
     }
